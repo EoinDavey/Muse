@@ -1,0 +1,7 @@
+melody Drumline start
+    play 1 + 2 3
+    wait 1 + 2 * 5 * (3 + 4)
+end
+
+melody Main start
+end

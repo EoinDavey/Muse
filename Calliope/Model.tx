@@ -1,0 +1,29 @@
+Program:
+    melodies*=Melody
+;
+
+Melody:
+    'melody' name=KID 'start'
+        statements*=Stmt
+    'end'
+;
+
+Stmt:
+    'pass' | PlayStmt | WaitStmt
+;
+
+PlayStmt: 'play' exp=FuncExpr;
+WaitStmt: 'wait' exp=Expr;
+
+Keyword:
+    'pass' | 'play' | 'start' | 'end'
+;
+
+KID: !Keyword ID;
+
+FuncExpr: op=Expr args*=Expr[eolterm];
+Expr: trm=Product (op=PlusMinus trm=Product)*;
+Product: trm=Atom (op=MulDiv trm=Atom)*;
+Atom: trm=KID | trm=INT | ('(' trm=FuncExpr ')');
+PlusMinus: '+' | '-';
+MulDiv: '*' | '/';

@@ -1,7 +1,17 @@
 melody Drumline start
-    play 1 + 2 3
-    wait 1 + 2 * 5 * (3 + 4)
+    play BassDrum 20
+    play BassDrum 10
+    play SnareDrum 10
+    wait 1
+
+    play (overlay (repeat Drumline 2) (repeat Drumline 3))
+    if x then play x end
+    if x then play x else play y end
 end
 
-melody Main start
+melody PianoSolo start
+    for i from 1 to 10
+        play Piano i
+        play Piano C3
+    end
 end

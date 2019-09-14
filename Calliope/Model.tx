@@ -43,3 +43,7 @@ Product: trm=Atom (op=MulDiv trm=Atom)*;
 Atom: trm=KID | trm=INT | ('(' trm=FuncExpr ')');
 PlusMinus: '+' | '-';
 MulDiv: '*' | '/';
+
+Comment:
+  /\/\/.*$/
+;

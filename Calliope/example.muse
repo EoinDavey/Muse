@@ -15,3 +15,15 @@ melody PianoSolo start
         play Piano C3
     end
 end
+
+melody Main start
+
+    drumIntro = repeat Drumline 3
+
+    play drumIntro
+
+    mainsong = overlay Drumline PianoSolo
+
+    play mainSong
+
+end

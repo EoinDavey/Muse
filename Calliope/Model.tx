@@ -9,14 +9,30 @@ Melody:
 ;
 
 Stmt:
-    'pass' | PlayStmt | WaitStmt
+    KeyStmt | AssignStmt | ForStmt | IfStmt
 ;
 
-PlayStmt: 'play' exp=FuncExpr;
-WaitStmt: 'wait' exp=Expr;
+KeyStmt: op=Funcs exp=FuncExpr;
+AssignStmt: lhs=KID '=' rhs=FuncExpr;
+
+ForStmt:
+'for' it=KID 'from' a=Expr 'to' b=Expr
+    statements*=Stmt
+'end'
+;
+
+IfStmt:
+'if' cond=Expr 'then'
+    then*=Stmt
+('end' | 'else' else*=Stmt 'end')
+;
+
+Funcs:
+    'play' | 'repeat' | 'overlay' | 'wait'
+;
 
 Keyword:
-    'pass' | 'play' | 'start' | 'end'
+    'start' | 'end' | 'for'
 ;
 
 KID: !Keyword ID;

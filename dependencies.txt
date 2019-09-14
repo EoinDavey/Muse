@@ -1,0 +1,3 @@
+textx
+simpleaudio
+pydub

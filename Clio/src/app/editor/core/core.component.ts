@@ -14,7 +14,7 @@ export class CoreComponent implements OnInit {
   currentLine: number;
   currentChar: number;
   tts = window.speechSynthesis;
-  audioCtx = new window.AudioContext;
+  audioCtx = new AudioContext();
   editorConfigured = false;
   bpm = 120;
   introText = 'You are now in the editor. You can begin typing code now. Press control + enter when you are ready to run your program. To change your BPM, press control + shift';

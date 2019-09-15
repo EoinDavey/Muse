@@ -40,6 +40,7 @@ export class CoreComponent implements OnInit {
   }
 
   ngOnInit() {
+    console.log(this.tts.getVoices());
     const intro = new SpeechSynthesisUtterance();
     intro.text = this.introText;
     intro.pitch = 0.5;
@@ -96,13 +97,13 @@ export class CoreComponent implements OnInit {
     }
     text = this.checkTextForSpecialChars(text);
     const utterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance();
-    console.log(this.tts.getVoices());
-    console.log(this.tts.getVoices().find(voice => voice.lang === 'en-US'));
-    utterance.voice = this.tts.getVoices().find(voice => voice.lang === 'en-US');
+    utterance.voice = this.tts.getVoices().find(voice => voice.name === 'en-US');
     utterance.text = text;
     // utterance.rate = 0.2;
     //utterance.pitch = 0.5;
     this.tts.speak(utterance);
+    console.log(utterance.voice);
+
   }
 
   checkTextForSpecialChars(char: string): string {

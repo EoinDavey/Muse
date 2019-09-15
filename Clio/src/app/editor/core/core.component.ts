@@ -14,6 +14,7 @@ export class CoreComponent implements OnInit {
   currentLine: number;
   currentChar: number;
   tts = window.speechSynthesis;
+  audioCtx = new window.AudioContext;
   editorConfigured = false;
   bpm = 120;
   introText = 'You are now in the editor. You can begin typing code now. Press control + enter when you are ready to run your program. To change your BPM, press control + shift';
@@ -51,50 +52,18 @@ export class CoreComponent implements OnInit {
   }
 
   submitCode() {
-    const utterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance();
-    utterance.lang = 'en-US';
-    utterance.voice = this.tts.getVoices().find(voice => voice.lang === 'en-US');
-    utterance.text = this.fileContent;
-    utterance.rate = 1.5;
-    utterance.pitch = 0.5;
-    this.tts.speak(utterance);
     this.httpService.sendCode({
       code: this.fileContent,
       bpm: this.bpm
-      }).subscribe((data) => this.processConcatenatedFile(data));
+      }).subscribe((data: ArrayBuffer) => {
+        const source = this.audioCtx.createBufferSource();
+        this.audioCtx.decodeAudioData(data, (buffer)=> {
+          source.buffer = buffer;
+          source.connect(this.audioCtx.destination);
+          source.start(0);
+        });
+      });
   }
-
-  processConcatenatedFile( data ) {
-    const bb = new DataView( data );
-    let offset = 0;
-    while ( offset < bb.byteLength ) {
-      const length = bb.getUint32( offset, true );
-      console.log(length);
-      offset += 4;
-      const sound = this.extractBuffer( data, offset, length );
-      offset += length;
-      this.createSoundWithBuffer( sound.buffer );
-    }
-  }
-
-
-  extractBuffer( src, offset, length ) {
-    const dstU8 = new Uint8Array( length );
-    const srcU8 = new Uint8Array( src, offset, length );
-    dstU8.set( srcU8 );
-    return dstU8;
-  }
-
-  createSoundWithBuffer( buffer ) {
-    const context = new AudioContext();
-    const audioSource = context.createBufferSource();
-    audioSource.connect( context.destination );
-    context.decodeAudioData( buffer, ( res ) => {
-      audioSource.buffer = res;
-      audioSource.start();
-    } );
-  }
-
 
   onCursorChange(editor: Editor) {
     if (!this.editorConfigured) {
@@ -127,10 +96,12 @@ export class CoreComponent implements OnInit {
     }
     text = this.checkTextForSpecialChars(text);
     const utterance: SpeechSynthesisUtterance = new SpeechSynthesisUtterance();
-    utterance.voice = this.tts.getVoices().find(voice => voice.lang === 'en');
+    console.log(this.tts.getVoices());
+    console.log(this.tts.getVoices().find(voice => voice.lang === 'en-US'));
+    utterance.voice = this.tts.getVoices().find(voice => voice.lang === 'en-US');
     utterance.text = text;
-    utterance.rate = rate;
-    utterance.pitch = 0.5;
+    // utterance.rate = 0.2;
+    //utterance.pitch = 0.5;
     this.tts.speak(utterance);
   }
 

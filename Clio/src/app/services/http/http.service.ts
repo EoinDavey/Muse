@@ -8,13 +8,17 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class HttpService {
-  baseUrl: string;
+  museUrl: string;
+  revAiUrl: string;
 
   constructor(private http: HttpClient) { }
 
   // TODO: Add headers as necessary
   sendCode(codeSubmission: ICodeSubmission): Observable<IAudioResponse> {
-    console.log(codeSubmission);
-    return this.http.post<IAudioResponse>(`${this.baseUrl}`, codeSubmission);
+    return this.http.post<IAudioResponse>(`${this.museUrl}`, codeSubmission);
+  }
+
+  sendAudio(codeSubmission: ICodeSubmission): Observable<IAudioResponse> {
+    return this.http.post<IAudioResponse>(`${this.museUrl}`, codeSubmission);
   }
 }

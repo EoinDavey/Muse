@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {HttpService} from '../../services/http/http.service';
 import {Hotkey, HotkeysService} from 'angular2-hotkeys';
 import {Editor} from 'codemirror';
@@ -9,18 +9,33 @@ import {Editor} from 'codemirror';
   styleUrls: ['./core.component.css']
 })
 export class CoreComponent implements OnInit {
+  @ViewChild('editor', {static: true}) editor: Editor;
   fileContent: string;
   currentLine: number;
   currentChar: number;
   tts = window.speechSynthesis;
   editorConfigured = false;
-  introText = 'You are now in the editor. You can begin typing code now. Press control + enter when you are ready to run your program.';
+  bpm = 120;
+  introText = 'You are now in the editor. You can begin typing code now. Press control + enter when you are ready to run your program. To change your BPM, press control + shift';
 
   constructor(private httpService: HttpService, private hotkeyService: HotkeysService) {
     this.hotkeyService.add(new Hotkey('ctrl+enter', (): boolean => {
       this.submitCode();
-      return false; // Prevent bubbling
+      return false;
     }, ['INPUT', 'TEXTAREA']));
+    this.hotkeyService.add(new Hotkey('ctrl+shift', (): boolean => {
+      this.changeBpm();
+      return false;
+    }, ['INPUT', 'TEXTAREA']));
+  }
+
+  changeBpm() {
+    const utter = new SpeechSynthesisUtterance();
+    utter.text = 'Enter a new BPM value then press enter';
+    utter.pitch = 0.5;
+    utter.rate = 1;
+    this.tts.speak(utter);
+    this.bpm = +prompt('Enter a new BPM value');
   }
 
   ngOnInit() {
@@ -32,6 +47,7 @@ export class CoreComponent implements OnInit {
       this.tts.cancel();
     }
     this.tts.speak(intro);
+    console.log(this.editor);
   }
 
   submitCode() {
@@ -43,14 +59,14 @@ export class CoreComponent implements OnInit {
     utterance.pitch = 0.5;
     this.tts.speak(utterance);
     this.httpService.sendCode({
-      code: this.fileContent
+      code: this.fileContent,
+      bpm: this.bpm
     });
   }
 
   onCursorChange(editor: Editor) {
     if (!this.editorConfigured) {
       editor.setSize(null, '100vh');
-      // editor.setOption('mode', 'calliope');
       this.editorConfigured = true;
     }
     const newLine = editor.getDoc().getCursor().line;

@@ -69,6 +69,7 @@ export class CoreComponent implements OnInit {
     let offset = 0;
     while ( offset < bb.byteLength ) {
       const length = bb.getUint32( offset, true );
+      console.log(length);
       offset += 4;
       const sound = this.extractBuffer( data, offset, length );
       offset += length;

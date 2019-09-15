@@ -37,6 +37,15 @@ def wait(env, argsev=[]):
 
     return BuiltIn(f)
 
+def piano(env, argsev=[]):
+    def f(_, __):
+        global depth
+        note = argsev[0]
+        dmp[depth].append(("piano",note))
+        depth+=1
+
+    return BuiltIn(f)
+
 def Overlay(env, argsev=[]):
     def f(_, __):
         global depth
@@ -53,17 +62,6 @@ def Overlay(env, argsev=[]):
 
     return BuiltIn(f)
 
-depth = 0
-
-dmp = defaultdict(list)
-
-builtins = {
-        "Bass" : BuiltIn(Play(("Bass",))),
-        "Snare" : BuiltIn(Play(("Snare",))),
-        "overlay" : BuiltIn(Overlay),
-        "repeat" : BuiltIn(repeat),
-        "wait" : BuiltIn(wait),
-}
 
 class Env:
     def __init__(self, sup=None):
@@ -115,13 +113,6 @@ class Melody:
 
         depth = pd
 
-MMFILE = "Model.tx"
-
-MM = metamodel_from_file(MMFILE, classes=[Melody])
-MM.register_obj_processors({'NoteLit': lambda x: ("NOTE",x)})
-
-gloE = Env()
-
 def parse(inp):
     try:
         model = MM.model_from_str(inp)
@@ -133,7 +124,7 @@ def parse(inp):
 def executeProgram(env, prog):
     for m in prog.melodies:
         evaluate(env, m)
-    prog.melodies[0].call(env)
+    v = prog.melodies[0].call(env)
 
 def executeBlock(env, block):
     env = Env(env)
@@ -183,7 +174,6 @@ def executeForStmt(env, stmt):
     b = evaluate(env, stmt.b)
     if not (isinstance(a, int) and isinstance(b, int)):
         return
-
     v = a
     env.set(stmt.it, v)
     for _ in range(a, b+1):
@@ -247,10 +237,39 @@ def procDmp(dmp):
             lss[i][time] = dmp[time][i]
     return lss
 
+def parseToAudio(inp):
+    global depth, dmp
+    depth = 0
+    dmp = defaultdict(list)
+    p = parse(inp)
+    if p:
+        evaluate(gloE, p)
+        val = procDmp(dmp)
+        return val
+    return None
+
+
+builtins = {
+        "Bass" : BuiltIn(Play(("Bass",))),
+        "Snare" : BuiltIn(Play(("Snare",))),
+        "overlay" : BuiltIn(Overlay),
+        "piano" : BuiltIn(piano),
+        "repeat" : BuiltIn(repeat),
+        "wait" : BuiltIn(wait),
+}
+
+MMFILE = "Calliope/Model.tx"
+
+MM = metamodel_from_file(MMFILE, classes=[Melody])
+MM.register_obj_processors({'NoteLit': lambda x: ("NOTE",x)})
+gloE = Env()
+for a, b in builtins.items():
+    gloE.set(a,b)
+
 if __name__ == "__main__":
-    gloE = Env()
-    for a, b in builtins.items():
-        gloE.set(a,b)
+    depth = 0
+
+    dmp = defaultdict(list)
 
     lns = sys.stdin.read()
     p = parse(lns)

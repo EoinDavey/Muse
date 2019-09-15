@@ -31,7 +31,7 @@ hello_barbie_lets_go_party = [
 
 
 def get_audio_segment_for_note(instrument, note):
-    return AudioSegment.from_file(f"sounds/{instrument}/{note}.mp3")
+    return AudioSegment.from_file(f"Erato/sounds/{instrument}/{note}.mp3")
 
 def piano(note):
     return get_audio_segment_for_note("piano", note)

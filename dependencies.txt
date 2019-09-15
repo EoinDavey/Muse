@@ -1,3 +1,5 @@
 textx
 simpleaudio
 pydub
+flask
+flask-cors

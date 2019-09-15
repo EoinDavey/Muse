@@ -61,7 +61,7 @@ export class CoreComponent implements OnInit {
     this.httpService.sendCode({
       code: this.fileContent,
       bpm: this.bpm
-    });
+      }).subscribe((data) => console.log(JSON.stringify(data)));
   }
 
   onCursorChange(editor: Editor) {

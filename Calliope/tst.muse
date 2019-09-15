@@ -1,6 +1,8 @@
 melody b start
     play Snare
-    play (overlay Drum Snare)
+    play (overlay Bass Snare)
     play (repeat Snare 3)
-    play Drum
+    play Bass
+    play (wait 3)
+    wait 2
 end

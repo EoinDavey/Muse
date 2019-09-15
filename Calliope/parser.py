@@ -25,6 +25,18 @@ def repeat(env, argsev=[]):
             ml.call(env)
     return BuiltIn(f)
 
+def wait(env, argsev=[]):
+    def f(_, __):
+        global depth
+        tms = argsev[0]
+
+        for _ in range(tms):
+            dmp[depth].append(("wait",))
+            depth+=1
+            
+
+    return BuiltIn(f)
+
 def Overlay(env, argsev=[]):
     def f(_, __):
         global depth
@@ -46,10 +58,11 @@ depth = 0
 dmp = defaultdict(list)
 
 builtins = {
-        "Drum" : BuiltIn(Play("Drum")),
-        "Snare" : BuiltIn(Play("Snare")),
+        "Bass" : BuiltIn(Play(("Bass",))),
+        "Snare" : BuiltIn(Play(("Snare",))),
         "overlay" : BuiltIn(Overlay),
         "repeat" : BuiltIn(repeat),
+        "wait" : BuiltIn(wait),
 }
 
 class Env:
@@ -155,7 +168,10 @@ def evalID(env, ID):
 
 def evalKeyStmt(env, stmt):
     expr = evaluate(env, stmt.exp)
-    expr.call(env)
+    if stmt.op == "play":
+        expr.call(env)
+    else:
+        wait(env, [expr]).call(env)
 
 def executeAssignStmt(env, stmt):
     v = evaluate(env, stmt.rhs)
@@ -222,6 +238,15 @@ def evalAtom(env, at):
         return at.trm[1]
     return evaluate(env, at.trm);
 
+def procDmp(dmp):
+    l = len(dmp)
+    w = max(map(len,dmp.values()))
+    lss = [[("wait",)]*l for _ in range(w)]
+    for time in range(l):
+        for i in range(len(dmp[time])):
+            lss[i][time] = dmp[time][i]
+    return lss
+
 if __name__ == "__main__":
     gloE = Env()
     for a, b in builtins.items():
@@ -231,4 +256,4 @@ if __name__ == "__main__":
     p = parse(lns)
     if p != None:
         evaluate(gloE, parse(lns))
-    print(dmp)
+    print(procDmp(dmp))

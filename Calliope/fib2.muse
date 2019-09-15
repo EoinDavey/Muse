@@ -5,5 +5,9 @@ end
 melody fib n start
     a = 0
     b = 1
-    for i from 1 to n:
+    for i from 1 to n
+        play (Sine 220 + 20 * a)
+        b = a + b
+        a = b - a
+    end
 end

@@ -103,16 +103,10 @@ class Melody:
 
     def call(self, env, argsev=None):
         def fn(_, __):
-            global depth
-
-            pd = depth
-
             nenv = Env(env)
             for i in range(len(self.args)):
                 nenv.set(self.args[i], argsev[i])
             executeBlock(nenv, self.statements)
-
-            depth = pd
 
         if not self.args:
             fn(env, argsev)

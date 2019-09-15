@@ -44,7 +44,7 @@ Atom: trm=NoteLit | trm=KID | trm=INT | ('(' trm=FuncExpr ')');
 PlusMinus: '+' | '-';
 MulDiv: '*' | '/';
 
-NoteLit: /\b[A-G][#b]?\d?\b/ ;
+NoteLit: /\b[A-G][#b]?\d?/ ;
 
 Comment:
   /\/\/.*$/

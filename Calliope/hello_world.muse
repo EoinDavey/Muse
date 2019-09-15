@@ -5,13 +5,13 @@ end
 melody b start
     play (piano C4)
     play (piano G4)
-    play (wait 1)
+    play (piano D4)
 end
 
 melody c start
     play (piano E4)
-    play (wait 1)
     play (piano B4)
+    play (piano Gb4)
 end
 
 melody d start

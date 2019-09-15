@@ -33,18 +33,18 @@ def wait(env, argsev=[]):
         for _ in range(tms):
             dmp[depth].append(("wait",))
             depth+=1
-            
 
     return BuiltIn(f)
 
-def piano(env, argsev=[]):
-    def f(_, __):
-        global depth
-        note = argsev[0]
-        dmp[depth].append(("piano",note))
-        depth+=1
+def wArgs(x):
+    def w(env, argsev=[]):
+        def f(_, __):
+            global depth
+            dmp[depth].append((x,)+tuple(argsev))
+            depth+=1
 
-    return BuiltIn(f)
+        return BuiltIn(f)
+    return w
 
 def Overlay(env, argsev=[]):
     def f(_, __):
@@ -102,16 +102,21 @@ class Melody:
         self.statements = statements
 
     def call(self, env, argsev=None):
-        global depth
+        def fn(_, __):
+            global depth
 
-        pd = depth
+            pd = depth
 
-        nenv = Env(env)
-        for i in range(len(self.args)):
-            nenv.set(self.args[i], argsev[i])
-        executeBlock(nenv, self.statements)
+            nenv = Env(env)
+            for i in range(len(self.args)):
+                nenv.set(self.args[i], argsev[i])
+            executeBlock(nenv, self.statements)
 
-        depth = pd
+            depth = pd
+
+        if not self.args:
+            fn(env, argsev)
+        return BuiltIn(fn)
 
 def parse(inp):
     return MM.model_from_str(inp)
@@ -245,10 +250,16 @@ def parseToAudio(inp):
 
 
 builtins = {
-        "Bass" : BuiltIn(Play(("Bass",))),
-        "Snare" : BuiltIn(Play(("Snare",))),
+        "Kick" : BuiltIn(Play(("kick",))),
+        "Snare" : BuiltIn(Play(("snare",))),
+        "Clap" : BuiltIn(Play(("clap",))),
+        "HiHat" : BuiltIn(Play(("hihat",))),
+        "Piano" : BuiltIn(wArgs("piano")),
+        "Sine" : BuiltIn(wArgs("sine")),
+        "Square" : BuiltIn(wArgs("square")),
+        "Triangle" : BuiltIn(wArgs("triangle")),
+        "Sawtooth" : BuiltIn(wArgs("sawtooth")),
         "overlay" : BuiltIn(Overlay),
-        "piano" : BuiltIn(piano),
         "repeat" : BuiltIn(repeat),
         "wait" : BuiltIn(wait),
 }

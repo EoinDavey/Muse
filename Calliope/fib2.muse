@@ -1,15 +1,9 @@
-melody A start
-    play Fib 20
+melody a start
+    play (fib 5)
 end
 
-melody Fib n start
+melody fib n start
     a = 0
     b = 1
-    for i from 1 to n
-        play a
-
-        // b, a = a + b, b
-        b = a + b
-        a = b - a
-    end
+    for i from 1 to n:
 end

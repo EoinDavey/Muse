@@ -1,0 +1,7 @@
+melody A start
+    play Test 10
+end
+
+melody Test x start
+    play x
+end

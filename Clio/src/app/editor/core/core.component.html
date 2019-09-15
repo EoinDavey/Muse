@@ -1,0 +1,9 @@
+<ngx-codemirror
+  [(ngModel)]="fileContent"
+  (cursorActivity)="onCursorChange($event)"
+  [options]="{
+  lineNumbers: true,
+  theme: '3024-night',
+  autofocus: true
+}"
+></ngx-codemirror>

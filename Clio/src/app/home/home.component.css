@@ -1,0 +1,81 @@
+@font-face {
+  font-family: scriptina;
+  src: url(../../assets/fonts/scriptina/SCRIPTIN.ttf);
+}
+
+h1 {
+  font-size: 120px;
+  font-family: scriptina, serif;
+  font-weight: bold;
+}
+
+h2 {
+  font-size: 60px;
+  font-family: Consolas, serif;
+}
+
+h3 {
+  font-size: 50px;
+  font-family: Consolas, serif;
+}
+
+.fixed.row {
+  height: 15em;
+  text-align: center;
+}
+
+#aThing {
+  background-color: #1D1E22;
+}
+
+.first.row {
+  background-color: #1D1E22;
+  height: 10em;
+}
+
+.flex.row {
+  text-align: center;
+}
+
+.foreground {
+  background-color: #393F4D;
+}
+
+#titleWrapper {
+  text-align: center;
+  margin: auto auto;
+}
+
+.primary-font {
+  color: #FEDA6A;
+}
+
+.secondary-font {
+  color: #D4D4DC;
+}
+
+.col-sm-4 {
+  padding: 30px;
+}
+
+p {
+  font-size: 30px;
+  font-family: Consolas, serif;
+}
+
+button {
+  color: #FEDA6A;
+  background-color: #393F4D;
+  width: 15em;
+  height: 3em;
+  text-align: center;
+  margin: auto auto;
+  font-size: 40px;
+  font-weight: bold;
+  font-family: Consolas, serif;
+}
+
+button:hover {
+  background-color: #FEDA6A;
+  color:#393F4D;
+}

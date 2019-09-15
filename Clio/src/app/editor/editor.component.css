@@ -1,0 +1,19 @@
+@font-face {
+  font-family: scriptina;
+  src: url(../../assets/fonts/scriptina/SCRIPTIN.ttf);
+}
+
+h1 {
+  font-size: 120px;
+  font-family: scriptina, serif;
+  font-weight: bold;
+  text-align: center;
+  color: #FEDA6A;
+}
+
+.jumbotron {
+  background-color: #393F4D;
+  height: 22em;
+  border-radius: 0;
+  margin: 0;
+}

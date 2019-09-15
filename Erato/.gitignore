@@ -1,5 +1,4 @@
 *.aiff
-*.mp3
 *.swp
 *.zip
 __pycache__

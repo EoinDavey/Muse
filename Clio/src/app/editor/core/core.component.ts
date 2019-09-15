@@ -61,8 +61,39 @@ export class CoreComponent implements OnInit {
     this.httpService.sendCode({
       code: this.fileContent,
       bpm: this.bpm
-      }).subscribe((data) => console.log(JSON.stringify(data)));
+      }).subscribe((data) => this.processConcatenatedFile(data));
   }
+
+  processConcatenatedFile( data ) {
+    const bb = new DataView( data );
+    let offset = 0;
+    while ( offset < bb.byteLength ) {
+      const length = bb.getUint32( offset, true );
+      offset += 4;
+      const sound = this.extractBuffer( data, offset, length );
+      offset += length;
+      this.createSoundWithBuffer( sound.buffer );
+    }
+  }
+
+
+  extractBuffer( src, offset, length ) {
+    const dstU8 = new Uint8Array( length );
+    const srcU8 = new Uint8Array( src, offset, length );
+    dstU8.set( srcU8 );
+    return dstU8;
+  }
+
+  createSoundWithBuffer( buffer ) {
+    const context = new AudioContext();
+    const audioSource = context.createBufferSource();
+    audioSource.connect( context.destination );
+    context.decodeAudioData( buffer, ( res ) => {
+      audioSource.buffer = res;
+      audioSource.start();
+    } );
+  }
+
 
   onCursorChange(editor: Editor) {
     if (!this.editorConfigured) {

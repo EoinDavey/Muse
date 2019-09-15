@@ -8,7 +8,7 @@ import {Observable} from 'rxjs';
   providedIn: 'root'
 })
 export class HttpService {
-  museUrl = "http://localhost:5000/foo";
+  museUrl = 'http://localhost:5000/foo';
   revAiUrl: string;
 
   constructor(private http: HttpClient) { }

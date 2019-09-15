@@ -4,7 +4,7 @@
 }
 
 h1 {
-  font-size: 120px;
+  font-size: 80px;
   font-family: scriptina, serif;
   font-weight: bold;
   text-align: center;
@@ -13,7 +13,7 @@ h1 {
 
 .jumbotron {
   background-color: #393F4D;
-  height: 22em;
+  height: 16em;
   border-radius: 0;
   margin: 0;
 }

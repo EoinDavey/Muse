@@ -15,7 +15,7 @@ import pydub.generators as gen
 
 
 # this is in milliseconds
-duration = 550
+duration = 500
 instrument = dict()
 
 hello_world = [
@@ -75,19 +75,19 @@ def guitar(note, vol):
 
 def sine(frequency):
     sine_wave = gen.Sine(int(frequency))
-    return sine_wave.to_audio_segment(duration=duration)
+    return sine_wave.to_audio_segment(duration=duration, volume=-5.0)
 
 def square(frequency):
     square_wave = gen.Square(int(frequency))
-    return square_wave.to_audio_segment(duration=duration)
+    return square_wave.to_audio_segment(duration=duration, volume=-5.0)
 
 def triangle(frequency):
     triangle_wave = gen.Triangle(int(frequency))
-    return triangle_wave.to_audio_segment(duration=duration)
+    return triangle_wave.to_audio_segment(duration=duration, volume=-5.0)
 
 def sawtooth(frequency):
     sawtooth_wave = gen.Sawtooth(int(frequency))
-    return sawtooth_wave.to_audio_segment(duration=duration)
+    return sawtooth_wave.to_audio_segment(duration=duration, volume=-5.0)
 
 def wait():
     return AudioSegment.silent(duration=duration)

@@ -1,11 +1,61 @@
 import sys
+from collections import defaultdict
 from textx import metamodel_from_file, TextXSyntaxError
 
+class BuiltIn:
+    def __init__(self,f):
+        self.f = f
+
+    def call(self, env, argsev=None):
+        return self.f(env, argsev)
+
+def Play(x):
+    def f(env, argsev=None):
+        global depth
+        dmp[depth].append(x)
+        depth += 1
+    return f
+
+def repeat(env, argsev=[]):
+    def f(_, __):
+        ml = argsev[0]
+        tms = argsev[1]
+
+        for _ in range(tms):
+            ml.call(env)
+    return BuiltIn(f)
+
+def Overlay(env, argsev=[]):
+    def f(_, __):
+        global depth
+        pd = depth
+
+        mxdpth = depth
+        for arg in argsev:
+            arg.call(env)
+            mxdpth = max(mxdpth, depth)
+
+            depth = pd
+
+        depth = mxdpth
+
+    return BuiltIn(f)
+
+depth = 0
+
+dmp = defaultdict(list)
+
+builtins = {
+        "Drum" : BuiltIn(Play("Drum")),
+        "Snare" : BuiltIn(Play("Snare")),
+        "overlay" : BuiltIn(Overlay),
+        "repeat" : BuiltIn(repeat),
+}
+
 class Env:
-    sup = None
-    vals = {}
     def __init__(self, sup=None):
         self.sup = sup
+        self.vals = {}
 
     def get(self, ID):
         if ID in self.vals:
@@ -32,7 +82,6 @@ class Env:
     def supContains(self, ID):
         return self.sup != None and self.sup.get(ID) != None
 
-
 class Melody:
 
     def __init__(self, parent, name, args, statements):
@@ -42,15 +91,21 @@ class Melody:
         self.statements = statements
 
     def call(self, env, argsev=None):
+        global depth
+
+        pd = depth
+
         nenv = Env(env)
         for i in range(len(self.args)):
             nenv.set(self.args[i], argsev[i])
-
         executeBlock(nenv, self.statements)
+
+        depth = pd
 
 MMFILE = "Model.tx"
 
 MM = metamodel_from_file(MMFILE, classes=[Melody])
+MM.register_obj_processors({'NoteLit': lambda x: ("NOTE",x)})
 
 gloE = Env()
 
@@ -88,6 +143,8 @@ def evaluate(env, x):
     }
     if isinstance(x, int) or isinstance(x, str):
         return x
+    if isinstance(x, tuple):
+        return x
     return envmp[x.__class__.__name__](env, x)
 
 def evalMelody(env, melody):
@@ -98,8 +155,7 @@ def evalID(env, ID):
 
 def evalKeyStmt(env, stmt):
     expr = evaluate(env, stmt.exp)
-    if stmt.op == "play":
-        print(expr)
+    expr.call(env)
 
 def executeAssignStmt(env, stmt):
     v = evaluate(env, stmt.rhs)
@@ -162,9 +218,17 @@ def evalAtom(env, at):
         return at.trm
     if isinstance(at.trm, str):
         return env.get(at.trm)
+    if isinstance(at.trm, tuple):
+        return at.trm[1]
     return evaluate(env, at.trm);
 
 if __name__ == "__main__":
+    gloE = Env()
+    for a, b in builtins.items():
+        gloE.set(a,b)
+
     lns = sys.stdin.read()
-    evaluate(gloE, parse(lns))
-    print(gloE.vals)
+    p = parse(lns)
+    if p != None:
+        evaluate(gloE, parse(lns))
+    print(dmp)

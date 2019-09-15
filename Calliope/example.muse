@@ -1,7 +1,7 @@
 melody Drumline start
-    play BassDrum 20
-    play BassDrum 10
-    play SnareDrum 10
+    play (BassDrum 20)
+    play (BassDrum 10)
+    play (SnareDrum 10)
     wait 1
 
     play (overlay (repeat Drumline 2) (repeat Drumline 3))

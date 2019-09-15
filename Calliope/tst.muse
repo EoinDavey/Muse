@@ -1,7 +1,6 @@
-melody A start
-    play Test 10
-end
-
-melody Test x start
-    play x
+melody b start
+    play Snare
+    play (overlay Drum Snare)
+    play (repeat Snare 3)
+    play Drum
 end

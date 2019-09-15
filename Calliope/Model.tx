@@ -42,7 +42,7 @@ Expr: trm=Product (op=PlusMinus trm=Product)*;
 Product: trm=Atom (op=MulDiv trm=Atom)*;
 Atom: trm=NoteLit | trm=KID | trm=INT | ('(' trm=FuncExpr ')');
 PlusMinus: '+' | '-';
-MulDiv: '*' | '/';
+MulDiv: '*' | '/' | '%';
 
 NoteLit: /\b[A-G][#b]?\d?/ ;
 

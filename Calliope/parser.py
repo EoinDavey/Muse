@@ -209,8 +209,10 @@ def evalProduct(env, expr):
     for a, b in zip(ops, trms[1:]):
         if a == '*':
             prd *= b
-        else:
+        elif a == '/':
             prd //= b
+        else:
+            prd %= b
     return prd
 
 def evalAtom(env, at):

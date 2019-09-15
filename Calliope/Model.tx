@@ -3,7 +3,7 @@ Program:
 ;
 
 Melody:
-    'melody' name=KID 'start'
+    'melody' name=KID args*=KID 'start'
         statements*=Stmt
     'end'
 ;
@@ -16,23 +16,23 @@ KeyStmt: op=Funcs exp=FuncExpr;
 AssignStmt: lhs=KID '=' rhs=FuncExpr;
 
 ForStmt:
-'for' it=KID 'from' a=Expr 'to' b=Expr
-    statements*=Stmt
-'end'
+    'for' it=KID 'from' a=Expr 'to' b=Expr
+        statements*=Stmt
+    'end'
 ;
 
 IfStmt:
-'if' cond=Expr 'then'
-    then*=Stmt
-('end' | 'else' else*=Stmt 'end')
+    'if' cond=Expr 'then'
+        then*=Stmt
+    ('end' | 'else' elsestmts*=Stmt 'end')
 ;
 
 Funcs:
-    'play' | 'repeat' | 'overlay' | 'wait'
+    'play' | 'wait'
 ;
 
 Keyword:
-    'start' | 'end' | 'for'
+    'start' | 'end' | 'for' | 'else' | 'if'
 ;
 
 KID: !Keyword ID;

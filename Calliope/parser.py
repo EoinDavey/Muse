@@ -114,12 +114,7 @@ class Melody:
         depth = pd
 
 def parse(inp):
-    try:
-        model = MM.model_from_str(inp)
-    except TextXSyntaxError as err:
-        print(err)
-        return None
-    return model
+    return MM.model_from_str(inp)
 
 def executeProgram(env, prog):
     for m in prog.melodies:

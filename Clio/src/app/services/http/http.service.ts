@@ -15,7 +15,7 @@ export class HttpService {
 
   // TODO: Add headers as necessary
   sendCode(codeSubmission: ICodeSubmission): Observable<any> {
-    return this.http.post<any>(`${this.museUrl}`, codeSubmission);
+      return this.http.post(`${this.museUrl}`, codeSubmission, {responseType: 'arraybuffer'});
   }
 
   sendAudio(codeSubmission: ICodeSubmission): Observable<IAudioResponse> {

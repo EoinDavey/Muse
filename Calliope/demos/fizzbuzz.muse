@@ -1,0 +1,13 @@
+melody main start
+    for i from 1 to 100
+        if i % 15 == 0 then
+            play (overlay Kick Snare)
+        else if i % 5 == 0 then 
+            play Kick
+        else if i % 3 == 0 then
+            play Snare
+        else
+            wait 1
+        end end end
+    end
+end

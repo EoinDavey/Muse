@@ -38,13 +38,17 @@ Keyword:
 KID: !Keyword ID;
 
 FuncExpr: op=Expr args*=Expr[eolterm];
-Expr: trm=Product (op=PlusMinus trm=Product)*;
+Expr: Eq;
+Eq: trm=Comp ('==' trm=Comp)*;
+Comp: trm=Sum (op=Compare trm=Sum)*;
+Sum: trm=Product (op=PlusMinus trm=Product)*;
 Product: trm=Atom (op=MulDiv trm=Atom)*;
 Atom: trm=NoteLit | trm=KID | trm=INT | ('(' trm=FuncExpr ')');
 PlusMinus: '+' | '-';
 MulDiv: '*' | '/' | '%';
+Compare: '<=' | '>=' | '<' | '>';
 
-NoteLit: /\b[A-G][#b]?\d?/ ;
+NoteLit: /\b[A-G][#b]?\d/ ;
 
 Comment:
   /\/\/.*$/

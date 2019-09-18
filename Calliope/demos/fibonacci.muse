@@ -1,5 +1,5 @@
 melody a start
-    play (fib 5)
+    play (fib 9)
 end
 
 melody fib n start

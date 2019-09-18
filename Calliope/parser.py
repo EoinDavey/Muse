@@ -129,7 +129,8 @@ def evaluate(env, x):
     envmp = {
             'AssignStmt' : executeAssignStmt,
             'Atom' : evalAtom,
-            'Expr' : evalExpr,
+            'Comp' : evalComp,
+            'Eq' : evalEq,
             'FuncExpr' : evalFuncExpr,
             'ForStmt' : executeForStmt,
             'IfStmt' : executeIfStmt,
@@ -138,6 +139,7 @@ def evaluate(env, x):
             'Melody' : evalMelody,
             'Product' : evalProduct,
             'Program' : executeProgram,
+            'Sum' : evalSum,
     }
     if isinstance(x, int) or isinstance(x, str):
         return x
@@ -191,7 +193,27 @@ def evalFuncExpr(env, func):
         return f
     return f.call(gloE, args)
 
-def evalExpr(env, expr):
+def evalComp(env, expr):
+    ops = expr.op
+    trms = list(map(lambda x: evaluate(env, x), expr.trm))
+    sm = trms[0] if len(trms) else 0
+    for a, b in zip(ops, trms[1:]):
+        sm = {
+                '<' : lambda p, q: p < q,
+                '>' : lambda p, q: p > q,
+                '>=' : lambda p, q: p >= q,
+                '<=' : lambda p, q: p <= q
+        }[a](sm, b)
+    return sm
+
+def evalEq(env, expr):
+    trms = list(map(lambda x: evaluate(env, x), expr.trm))
+    sm = trms[0] if len(trms) else 0
+    for b in trms[1:]:
+        sm = sm == b
+    return sm
+
+def evalSum(env, expr):
     ops = expr.op
     trms = list(map(lambda x: evaluate(env, x), expr.trm))
     sm = trms[0] if len(trms) else 0

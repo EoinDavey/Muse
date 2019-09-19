@@ -16,6 +16,14 @@ Components
 * Calliope - Language interpreter
 * Erato - Audio Engine
 
+Running
+=======
+
+The easiest way to run the project is to build the Docker image from the Dockerfile. `docker build . -t muse`
+
+Then run `docker run --rm -it -p 80:4200 -p 5000:5000 muse`
+
+This will host the project at http://localhost/
 
 Dependencies
 ============

@@ -1,5 +1,16 @@
+Muse
+====
+
+Muse is our HackMIT 2019 project, a 24 hour hackathon held in MIT.
+
+Contributors
+- Eoin Davey
+- Ian Fennell
+- Killian Kelly
+- Dara MacConville
+
 What it does
-===========
+-----------
 
 Our project provides an environment for people with visual impairments to learn core computer science concepts.
 
@@ -10,14 +21,14 @@ The editor allows users to program in a novel, innovative language designed spec
 Users can write code in their browser, and our custom interpreter and audio engine will compile and play whatever sounds and music their hearts desire.
 
 Components
-==========
+----------
 
 * Clio - webapp
 * Calliope - Language interpreter
 * Erato - Audio Engine
 
 Running
-=======
+-------
 
 The easiest way to run the project is to build the Docker image from the Dockerfile. `docker build . -t muse`
 
@@ -26,7 +37,7 @@ Then run `docker run --rm -it -p 80:4200 -p 5000:5000 muse`
 This will host the project at http://localhost/
 
 Dependencies
-============
+------------
 
 Note that simpleaudio required libasound2-dev.
 

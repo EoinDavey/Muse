@@ -1,0 +1,21 @@
+melody a start
+    play (overlay b c d)
+end
+
+melody b start
+    play (Piano C4)
+    play (Piano G4)
+    play (Piano D4)
+end
+
+melody c start
+    play (Piano E4)
+    play (Piano B4)
+    play (Piano Gb4)
+end
+
+melody d start
+    play (Piano G4)
+    play (Piano D4)
+    play (Piano A4)
+end

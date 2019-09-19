@@ -1,0 +1,12 @@
+// Recursive fibonacci
+
+melody A start
+    play (Fib 10 0 1)
+end
+
+melody Fib n a b start
+    if n then
+        play (Sine 220 + a)
+        play (Fib (n-1) (a+b) a)
+    end
+end

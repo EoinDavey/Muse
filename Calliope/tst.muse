@@ -1,8 +1,0 @@
-melody b start
-    play Snare
-    play (overlay Kick Snare)
-    play (repeat Snare 3)
-    play Kick
-    play (wait 3)
-    wait 2
-end
